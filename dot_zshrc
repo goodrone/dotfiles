@@ -1,0 +1,64 @@
+set -e
+[[ -n "${ZSH_VERSION}" ]]  # Only zsh should source this file.
+
+[[ "${TERM}" == "xterm" ]] && export TERM="screen-256color"
+
+# Initialize completion.
+autoload -Uz compinit && compinit
+
+# Initialize prompt.
+autoload -Uz promptinit && promptinit
+unset RPROMPT
+prompt off
+
+# Enable colors.
+autoload -Uz colors && colors
+
+# Re-evaluate prompt on every command.
+setopt prompt_subst
+
+# History.
+HISTSIZE=99000
+SAVEHIST=50000
+HISTFILE="${HOME}/.zsh_history"
+setopt append_history
+setopt extended_history  # Timestamps and duration.
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history  # Use `fc -RI' to import commands.
+
+# Define the prompt here.
+export PROMPT="%F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
+export RPROMPT=" %B%F{240}\$PROJECT_NAME%b%f"
+
+# Define some aliases.
+if [[ "$(uname)" == "Darwin" ]]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+fi
+alias l='ls'
+alias ll='ls -l'
+
+# agp is ag+pager
+alias agp='ag --pager="less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS" --color'
+
+# Emacs style bindings (for Home/End keys...)
+bindkey -e
+
+# Define key bindings here.
+bindkey '^R' history-incremental-search-backward
+bindkey '^[[1;5C' forward-word   # Ctrl-RightArrow
+bindkey '\ef' forward-word       # Alt-f
+bindkey '^[[1;5D' backward-word  # Ctrl-LeftArrow
+bindkey '\eb' backward-word      # Alt-b
+bindkey '\e.' insert-last-word   # Alt-.
+
+local ZSHRC_LOCAL="${HOME}/.zshrc.local"
+[[ -f "${ZSHRC_LOCAL}" ]] && source "${ZSHRC_LOCAL}"
+
+set +e
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
