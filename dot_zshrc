@@ -1,7 +1,8 @@
+# shellcheck disable=SC2148
 set -e
-[[ -n "${ZSH_VERSION}" ]]  # Only zsh should source this file.
+[[ -n ${ZSH_VERSION} ]]  # Only zsh should source this file.
 
-[[ "${TERM}" == "xterm" ]] && export TERM="screen-256color"
+[[ ${TERM} == xterm ]] && export TERM=screen-256color
 
 # Initialize completion.
 autoload -Uz compinit && compinit
@@ -21,9 +22,10 @@ setopt prompt_subst
 export PROMPT="%F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
 
 # History.
-HISTSIZE=99000
+# shellcheck disable=SC2034
 SAVEHIST=50000
-HISTFILE="${HOME}/.zsh_history"
+HISTSIZE=99000
+HISTFILE=${HOME}/.zsh_history
 setopt append_history
 setopt extended_history  # Timestamps and duration.
 setopt hist_expire_dups_first
@@ -55,9 +57,13 @@ bindkey '^[[1;5D' backward-word  # Ctrl-LeftArrow
 bindkey '\eb' backward-word      # Alt-b
 bindkey '\e.' insert-last-word   # Alt-.
 
-local ZSHRC_LOCAL="${HOME}/.zshrc.local"
-[[ -f "${ZSHRC_LOCAL}" ]] && source "${ZSHRC_LOCAL}"
+[[ -f $HOME/.zshrc.local ]] && source "$HOME/.zshrc.local"
 
 set +e
 
-export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH=$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
+
+if [[ -d $HOME/.pyenv ]]; then
+    export PATH=$HOME/.pyenv/bin:$PATH
+    eval "$(pyenv init -)"
+fi
