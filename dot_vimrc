@@ -1,0 +1,118 @@
+set fileencodings=utf-8
+set encoding=utf-8 nobomb
+
+" Plugins using Pathogen.
+"execute pathogen#infect()
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+if has('autocmd')
+  filetype plugin indent on
+endif
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable
+endif
+
+" Works for C-like and other languages
+set smartindent
+
+" Show line numbers
+set number
+
+" Show bottom bar
+set laststatus=2
+
+" Enhanced completion mode
+set wildmenu
+
+" Show line and column number
+set ruler
+
+" Minimal offset around the cursor
+set scrolloff=2
+set sidescrolloff=5
+
+" Show as much as possible of the last line
+set display+=lastline
+
+if v:version > 703 || v:version == 703 && has("patch541")
+" Delete comment when joining lines
+set formatoptions+=j
+endif
+
+" Automatically read if modified outside
+set autoread
+
+set t_Co=256
+
+set background=dark  " must go before 'highlight' lines
+
+highlight LineNr     ctermfg=245 ctermbg=235
+highlight StatusLine ctermfg=015 ctermbg=017 cterm=NONE
+highlight Pmenu      ctermfg=233 ctermbg=245
+highlight PmenuSel   ctermfg=015 ctermbg=026
+highlight MatchParen ctermfg=226 ctermbg=238 cterm=bold
+highlight Search     ctermfg=232 ctermbg=204 cterm=bold
+highlight Visual     ctermfg=232 ctermbg=039
+highlight NonText    ctermfg=236
+highlight SpecialKey ctermfg=239
+highlight User1      ctermfg=236
+highlight Ignore     ctermfg=000
+highlight Comment    ctermfg=032
+highlight Macro      ctermfg=212
+highlight Type       ctermfg=106
+
+set incsearch
+set hlsearch
+
+set viminfo='10,\"100,:99,%,n~/.viminfo
+
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+set showcmd         " Show (partial) command in status line.
+set showmatch       " Show matching brackets.
+set ignorecase      " Do case insensitive matching
+set smartcase       " Do smart case matching
+set autowrite       " Automatically save before commands like :next and :make
+set hidden          " Hide buffers when they are abandoned
+set mouse=a         " Enable mouse usage (all modes)
+
+" set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set listchars=tab:▸\ ,trail:·
+set list
+
+" Control-Backspace should work
+imap <C-BS> <C-W>
+
+set colorcolumn=80
+highlight ColorColumn ctermbg=233
+
+let mapleader=" "
+nnoremap <Leader><Space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+nmap <Leader>l :set invlist list?<CR>
+nmap <Leader>n :set invnumber number?<CR>
+nmap <Leader>w :w<CR>
+nmap <Leader>s :wa<CR>:source $HOME/.vimrc<CR>
+nmap <Leader>p :set invpaste paste?<CR>
+nmap <Leader>g <C-]>
+
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+
+" In Visual mode, attempting to indent keeps selection.
+vnoremap > >gv
+vnoremap < <gv
+
+" Add the g flag to search/replace by default
+set gdefault
+
+" Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set clipboard=unnamed
+
+" Backspace should work over autoindent, line breaks and the start of insert.
+set backspace=indent,eol,start
