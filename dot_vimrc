@@ -68,7 +68,9 @@ highlight Type       ctermfg=106
 set incsearch
 set hlsearch
 
-set viminfo='10,\"100,:99,%,n~/.viminfo
+if !has('nvim')
+    set viminfo='10,\"100,:99,%,n~/.viminfo
+endif
 
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
