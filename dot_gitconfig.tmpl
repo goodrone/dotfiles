@@ -1,6 +1,10 @@
 [user]
     name = Andrey Trachenko
+{{ if (eq .chezmoi.username "atrachenko") }}
+    email = atrachenko@nvidia.com
+{{ else }}
     email = goodrone@gmail.com
+{{ end }}
 [push]
     default = current
 [alias]
