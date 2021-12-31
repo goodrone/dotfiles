@@ -1,8 +1,11 @@
 # shellcheck disable=SC2148
 set -e
-[[ -n ${ZSH_VERSION} ]]  # Only zsh should source this file.
+[[ -n $ZSH_VERSION ]]  # Only zsh should source this file.
 
-[[ ${TERM} == xterm ]] && export TERM=screen-256color
+[[ $TERM == xterm ]] && export TERM=screen-256color
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Initialize completion.
 autoload -Uz compinit && compinit
@@ -19,13 +22,13 @@ autoload -Uz colors && colors
 setopt prompt_subst
 
 # Define the prompt here.
-export PROMPT="%F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
+export PROMPT="%F{8}%m %F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
 
 # History.
 # shellcheck disable=SC2034
 SAVEHIST=50000
 HISTSIZE=99000
-HISTFILE=${HOME}/.zsh_history
+HISTFILE=$HOME/.zsh_history
 setopt append_history
 setopt extended_history  # Timestamps and duration.
 setopt hist_expire_dups_first
@@ -37,14 +40,15 @@ setopt inc_append_history  # Use `fc -RI' to import commands.
 # Define some aliases.
 if [[ $OSTYPE == darwin* ]]; then
     alias ls='ls -G'
+    # shellcheck disable=SC2154
+    if (( $+commands[nvim] )); then
+        alias vim=nvim
+    fi
 else
     alias ls='ls --color=auto'
 fi
-alias l='ls'
+alias l=ls
 alias ll='ls -l'
-
-# agp is ag+pager
-alias agp='ag --pager="less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS" --color'
 
 # Emacs style bindings (for Home/End keys...)
 bindkey -e
@@ -61,9 +65,17 @@ bindkey '\e.' insert-last-word   # Alt-.
 
 set +e
 
-export PATH=$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
+if [[ $OSTYPE == darwin* && -d /opt/local/bin ]]; then
+    export PATH=$PATH:/opt/local/bin
+fi
+
+[[ -d $HOME/.yarn ]] && export PATH=$HOME/.yarn/bin:$PATH
 
 if [[ -d $HOME/.pyenv ]]; then
     export PATH=$HOME/.pyenv/bin:$PATH
-    eval "$(pyenv init -)"
+    if [[ -z $PYENV_SHELL ]]; then
+        eval "$(pyenv init -)"
+    fi
 fi
+
+[[ -d $HOME/bin ]] && export PATH=$HOME/bin:$PATH
