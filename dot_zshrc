@@ -17,6 +17,9 @@ autoload -Uz colors && colors
 # Re-evaluate prompt on every command.
 setopt prompt_subst
 
+# Define the prompt here.
+export PROMPT="%F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
+
 # History.
 HISTSIZE=99000
 SAVEHIST=50000
@@ -29,12 +32,8 @@ setopt hist_ignore_space
 setopt hist_verify
 setopt inc_append_history  # Use `fc -RI' to import commands.
 
-# Define the prompt here.
-export PROMPT="%F{yellow}%~%f %(1j.%K{052} %F{white}%j%f %k .)%(?..%F{red})%%%f "
-export RPROMPT=" %B%F{240}\$PROJECT_NAME%b%f"
-
 # Define some aliases.
-if [[ "$(uname)" == "Darwin" ]]; then
+if [[ $OSTYPE == darwin* ]]; then
     alias ls='ls -G'
 else
     alias ls='ls --color=auto'
@@ -61,4 +60,4 @@ local ZSHRC_LOCAL="${HOME}/.zshrc.local"
 
 set +e
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
