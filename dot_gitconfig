@@ -1,0 +1,7 @@
+[user]
+    name = Andrey Trachenko
+    email = goodrone@gmail.com
+[push]
+    default = current
+[alias]
+    tree = log --oneline --decorate --all --graph
