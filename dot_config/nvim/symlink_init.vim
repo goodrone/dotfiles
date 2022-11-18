@@ -1,1 +1,0 @@
-/Users/goodrone/.vimrc
