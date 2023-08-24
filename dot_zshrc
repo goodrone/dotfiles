@@ -60,6 +60,10 @@ bindkey '\ef' forward-word       # Alt-f
 bindkey '^[[1;5D' backward-word  # Ctrl-LeftArrow
 bindkey '\eb' backward-word      # Alt-b
 bindkey '\e.' insert-last-word   # Alt-.
+bindkey "$terminfo[kcuu1]" history-beginning-search-backward # Up
+bindkey "$terminfo[kcud1]" history-beginning-search-forward  # Down
+
+[[ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 [[ -f $HOME/.zshrc.local ]] && source "$HOME/.zshrc.local"
 
@@ -79,3 +83,7 @@ if [[ -d $HOME/.pyenv ]]; then
 fi
 
 [[ -d $HOME/bin ]] && export PATH=$HOME/bin:$PATH
+
+ZSH_CACHE_DIR=$HOME/.cache/zsh
+mkdir -p "$ZSH_CACHE_DIR"
+[[ -d $HOME/.oh-my-zsh ]] && source $HOME/.oh-my-zsh/plugins/dotenv/dotenv.plugin.zsh
